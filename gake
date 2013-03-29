@@ -3,7 +3,6 @@
 var fs = require('fs');
 var async = require('async');
 var exec = require('child_process').exec
-var coffee = require('coffee-script');
 
 var arguments = process.argv.splice(2);
 
@@ -25,7 +24,6 @@ fs.exists('Gakefile', function(exists) {
 					console.log('-=-=-=-=-=-=-=-=-=-=-');
 					console.log(reset);
 					var act = exec(row.command, function(err, stdout, stderr) {
-						// if (err) throw err 
 						console.log(stdout + stderr);
 					});
 					act.on('close', function(code, signal) {
@@ -38,15 +36,6 @@ fs.exists('Gakefile', function(exists) {
 				if (err) throw err
 			});
 		});
-		// fs.readFile('Gakefile', 'utf-8', function (err, data) {
-					
-		// 	global.task = function(desc, fn) {
-		// 		console.log(desc);
-		// 		fn();
-		// 	}
-		// 	coffee.run(data);
-		// });
-
 	} else {
 		console.log('No Gakefile found!');
 	}
