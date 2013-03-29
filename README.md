@@ -3,6 +3,11 @@ Gake
 
 Merge of Grunt and Cake.
 
+1. Add 'gake' to /usr(/local)/bin or symbolic link to it.
+2. Add a Gakefile to project root.
+3. Run 'gake' in project root.
+
+
 Gakefile is a simple JSON:
 
     [
