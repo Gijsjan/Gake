@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var async = require('async');
+var exec = require('child_process').exec
+var coffee = require('coffee-script');
+
+var arguments = process.argv.splice(2);
+
+var cyan  = '\u001b[36m';
+var reset = '\u001b[0m';
+
+
+fs.exists('Gakefile', function(exists) {
+	if (exists) {
+		fs.readFile('Gakefile', 'utf-8', function (err, data) {
+			data = JSON.parse(data);
+			var fns = [];
+
+			data.forEach(function(row, i) {
+				fns.push(function(cb) {
+					console.log(cyan);
+					console.log('-=-=-=-=-=-=-=-=-=-=-');
+					console.log(row.description);
+					console.log('-=-=-=-=-=-=-=-=-=-=-');
+					console.log(reset);
+					var act = exec(row.command, function(err, stdout, stderr) {
+						// if (err) throw err 
+						console.log(stdout + stderr);
+					});
+					act.on('close', function(code, signal) {
+						cb(null, i)
+					});
+				});
+			});
+
+			async.series(fns, function(err, result) {
+				if (err) throw err
+			});
+		});
+		// fs.readFile('Gakefile', 'utf-8', function (err, data) {
+					
+		// 	global.task = function(desc, fn) {
+		// 		console.log(desc);
+		// 		fn();
+		// 	}
+		// 	coffee.run(data);
+		// });
+
+	} else {
+		console.log('No Gakefile found!');
+	}
+});
